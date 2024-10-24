@@ -1,42 +1,40 @@
-from ObstacleDetection import ObstacleDetection
 from RobotStates import RobotStates
 from State import State
-from infrared import Infrared
-from Motor import PWM
+from maze import INFRARED, OBSTACLE_DETECTION, PWM
+
 
 class ForwardState(State):
-    def __init__(self, INFRARED: Infrared, OBSTACLE_DETECTION: ObstacleDetection):
+    def __init__(self):
         super().__init__()
-        self.INFRARED = INFRARED
-        self.OBSTACLE_DETECTION = OBSTACLE_DETECTION
         self.STATE = -1
 
     def setup(self):
         super().setup()
         self.STATE = -1
-        self.OBSTACLE_DETECTION.start()
+        OBSTACLE_DETECTION.start()
         pass
 
     def exit(self):
         super().exit()
-        self.OBSTACLE_DETECTION.stop()
+        OBSTACLE_DETECTION.stop()
 
     def run(self) -> RobotStates:
-        if (self.INFRARED.has_cross_road()):
-            return RobotStates.TURN
+        if (INFRARED.has_left_turn() or INFRARED.has_right_turn() or INFRARED.has_cross_road()):
+            print("Corner found, current state: " + str(INFRARED.get_state()))
+            return RobotStates.CORNER_FOUND
         
         self.move()
 
-        if self.OBSTACLE_DETECTION.found_obstacle():
+        if OBSTACLE_DETECTION.found_obstacle():
             return RobotStates.BACKWARD
         
         return RobotStates.FORWARD
         
 
     def move(self):
-        state = self.INFRARED.get_state()
+        state = INFRARED.get_state()
 
         if (state != self.STATE):
             self.STATE = state
-            duties = self.INFRARED.DUTIES[state]
+            duties = INFRARED.DUTIES[state]
             PWM.setMotorModel(duties.topLeft, duties.bottomLeft, duties.topRight, duties.bottomRight)

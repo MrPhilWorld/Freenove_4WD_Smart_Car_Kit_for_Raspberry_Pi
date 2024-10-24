@@ -8,7 +8,7 @@ class Infrared:
     def __init__(self):
         self.L_SENSOR = GPIO.input(INFRARED.IR01)
         self.M_SENSOR = GPIO.input(INFRARED.IR02)
-        self.R_SENSOR = GPIO.input(INFRARED.IR02)
+        self.R_SENSOR = GPIO.input(INFRARED.IR03)
         self.DUTIES = {
             0: Duties(800, 800, 800, 800),
             1: Duties(2500, 2500, -1500, -1500),
@@ -23,7 +23,7 @@ class Infrared:
     def get_state(self):
         self.L_SENSOR = GPIO.input(INFRARED.IR01)
         self.M_SENSOR = GPIO.input(INFRARED.IR02)
-        self.R_SENSOR = GPIO.input(INFRARED.IR02)
+        self.R_SENSOR = GPIO.input(INFRARED.IR03)
         state = 0
         if self.L_SENSOR == True:
             state=(state | 4)
@@ -43,7 +43,7 @@ class Infrared:
     
     def is_R_activated(self):
         self.R_SENSOR = GPIO.input(INFRARED.IR03)
-        return self.D_SENSOR
+        return self.R_SENSOR
     
     def has_left_turn(self):
         return (self.is_L_activated() == True and 

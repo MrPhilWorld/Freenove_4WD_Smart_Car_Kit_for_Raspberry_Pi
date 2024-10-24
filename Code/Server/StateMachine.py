@@ -1,25 +1,19 @@
-from ForwardState import ForwardState
-from ObstacleDetection import ObstacleDetection
-from RobotStates import RobotStates
-
-from Motor import Motor
 from State import State
+from BackwardState import BackwardState
+from CornerState import CornerState
+from ForwardState import ForwardState
 from TurnState import TurnState
-from Ultrasonic import Ultrasonic
-from Led import Led, Color
-from infrared import Infrared
 
-PWM=Motor()
-ULTRASONIC=Ultrasonic()
-LED=Led()
-INFRARED=Infrared()
-OBSTACLE_DETECTION=ObstacleDetection()
+from RobotStates import RobotStates
+from maze import LED, OBSTACLE_DETECTION, PWM, Color
 
 class StateMachine():
     def __init__(self, initial_state: RobotStates = RobotStates.FORWARD):
         self.STATES: dict[RobotStates, State] = { 
-            RobotStates.FORWARD: ForwardState(INFRARED, OBSTACLE_DETECTION),
-            RobotStates.TURN: TurnState(INFRARED)
+            RobotStates.FORWARD: ForwardState(),
+            RobotStates.TURN: TurnState(),
+            RobotStates.BACKWARD: BackwardState(),
+            RobotStates.CORNER_FOUND: CornerState()
         }
         self.STATE = initial_state
         self.STATES[self.STATE].setup()
