@@ -9,6 +9,7 @@ ULTRASONIC=Ultrasonic()
 class ObstacleDetection():
     def __init__(self):
         self.ACTIVE = False
+        self.DISTANCE = 0
 
     def start(self):
         self.ACTIVE = True
@@ -16,9 +17,13 @@ class ObstacleDetection():
         servo_thread = threading.Thread(target=self.move_Servo)
         servo_thread.daemon = True
         servo_thread.start()
+        ultrasonic_thread = threading.Thread(target=self.update_distance_check)
+        ultrasonic_thread.daemon = True
+        ultrasonic_thread.start()
 
     def stop(self):
         self.ACTIVE = False
+        self.DISTANCE = 0
 
     def move_Servo(self):
         try:
@@ -30,15 +35,20 @@ class ObstacleDetection():
                     SERVO.setServoPwm('0',i)
                     time.sleep(0.01) 
         except KeyboardInterrupt:
-            self.destroy()
+            self.reset()
             print ("\nEnd of program")
 
     def found_obstacle(self):
         distance_detection = 10
-        distance = ULTRASONIC.get_distance()
-
-        return (distance > 0 and distance < distance_detection)
-        
+        return (self.DISTANCE > 0 and self.DISTANCE < distance_detection)
+    
+    def update_distance_check(self):
+        try:
+            while self.ACTIVE:
+                self.DISTANCE = ULTRASONIC.get_distance()
+        except KeyboardInterrupt:
+            print ("\nEnd of program")
+            
     def reset(self):
         SERVO.setServoPwm('0',90)
         SERVO.setServoPwm('1',90)

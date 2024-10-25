@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 from RobotStates import RobotStates
-from Motor import PWM
+from maze import ENGINE
 
 class State(ABC):
     def __init__(self):
@@ -10,7 +10,7 @@ class State(ABC):
     @abstractmethod
     def setup(self):
         print(self.__class__.__name__)
-        PWM.setMotorModel(0, 0, 0, 0)
+        ENGINE.stop()
 
     @abstractmethod
     def exit(self):

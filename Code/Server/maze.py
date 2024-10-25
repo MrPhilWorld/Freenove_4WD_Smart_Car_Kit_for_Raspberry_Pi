@@ -1,16 +1,15 @@
-from Action import *
+from Engine import Engine
+from LightControl import LightControl
 from ObstacleDetection import ObstacleDetection
 from RobotStates import RobotStates
 from StateMachine import *
 
-from Motor import Motor
 from Ultrasonic import Ultrasonic
-from Led import Led, Color
 from infrared import Infrared
 
-PWM=Motor()
+ENGINE=Engine()
 ULTRASONIC=Ultrasonic()
-LED=Led()
+LIGHT_CONTROL=LightControl()
 INFRARED=Infrared()
 OBSTACLE_DETECTION=ObstacleDetection()
 

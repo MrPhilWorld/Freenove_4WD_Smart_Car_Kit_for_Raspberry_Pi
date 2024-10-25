@@ -1,16 +1,19 @@
+from Colors import Colors
 from RobotStates import RobotStates
 from State import State
-from maze import INFRARED, OBSTACLE_DETECTION, PWM
+from Directions import Directions
+from maze import INFRARED, LIGHT_CONTROL, OBSTACLE_DETECTION, ENGINE
 
 
 class ForwardState(State):
     def __init__(self):
         super().__init__()
-        self.STATE = -1
+        self.DIRECTION = Directions.NONE
 
     def setup(self):
         super().setup()
-        self.STATE = -1
+        LIGHT_CONTROL.setColor(Colors.GREEN)
+        self.DIRECTION = Directions.NONE
         OBSTACLE_DETECTION.start()
         pass
 
@@ -19,9 +22,9 @@ class ForwardState(State):
         OBSTACLE_DETECTION.stop()
 
     def run(self) -> RobotStates:
-        if (INFRARED.has_left_turn() or INFRARED.has_right_turn() or INFRARED.has_cross_road()):
-            print("Corner found, current state: " + str(INFRARED.get_state()))
-            return RobotStates.CORNER_FOUND
+        direction = INFRARED.get_direction()
+        if (INFRARED.requires_turn(direction)):
+            return RobotStates.PATH_DECISION
         
         self.move()
 
@@ -29,12 +32,10 @@ class ForwardState(State):
             return RobotStates.BACKWARD
         
         return RobotStates.FORWARD
-        
 
     def move(self):
-        state = INFRARED.get_state()
+        direction = INFRARED.get_direction()
 
-        if (state != self.STATE):
-            self.STATE = state
-            duties = INFRARED.DUTIES[state]
-            PWM.setMotorModel(duties.topLeft, duties.bottomLeft, duties.topRight, duties.bottomRight)
+        if (direction != self.DIRECTION):
+            self.DIRECTION = direction
+            ENGINE.setDirection(direction)

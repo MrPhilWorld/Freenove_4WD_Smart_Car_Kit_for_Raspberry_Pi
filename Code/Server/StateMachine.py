@@ -1,11 +1,12 @@
+from Colors import Colors
 from State import State
 from BackwardState import BackwardState
-from CornerState import CornerState
+from PathDecisionState import PathDecisionState
 from ForwardState import ForwardState
 from TurnState import TurnState
 
 from RobotStates import RobotStates
-from maze import LED, OBSTACLE_DETECTION, PWM, Color
+from maze import LIGHT_CONTROL, OBSTACLE_DETECTION, ENGINE
 
 class StateMachine():
     def __init__(self, initial_state: RobotStates = RobotStates.FORWARD):
@@ -13,7 +14,7 @@ class StateMachine():
             RobotStates.FORWARD: ForwardState(),
             RobotStates.TURN: TurnState(),
             RobotStates.BACKWARD: BackwardState(),
-            RobotStates.CORNER_FOUND: CornerState()
+            RobotStates.PATH_DECISION: PathDecisionState()
         }
         self.STATE = initial_state
         self.STATES[self.STATE].setup()
@@ -24,10 +25,9 @@ class StateMachine():
         if (self.STATE != next_state):
             self.STATES[self.STATE].exit()
             self.STATE = next_state
-            print(next_state.name)
             self.STATES[self.STATE].setup()
 
     def reset(self):
-        LED.colorWipe(LED.strip, Color(0,0,0))
-        PWM.setMotorModel(0,0,0,0)
+        LIGHT_CONTROL.setColor(Colors.NONE)
+        ENGINE.stop()
         OBSTACLE_DETECTION.reset()

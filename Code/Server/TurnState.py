@@ -1,26 +1,36 @@
 import time
+from Colors import Colors
+from Directions import Directions
 from RobotStates import RobotStates
 from State import State
-from maze import INFRARED, PWM
+from maze import INFRARED, ENGINE, LIGHT_CONTROL
 
 class TurnState(State):
     def __init__(self):
         super().__init__()
-        self.INITIAL_TIME = time.time()
+        self.ignoreTime = 0.5
 
     def setup(self):
         super().setup()
-        self.state = INFRARED.get_state()
-        duties = INFRARED.DUTIES[self.state]
-        PWM.setMotorModel(duties.topLeft, duties.bottomLeft, duties.topRight, duties.bottomRight)
+        LIGHT_CONTROL.setColor(Colors.YELLOW)
+        self.initialTime = time.time()
+        self.turnDirection = ENGINE.desired_turn_direction
+        ENGINE.setDirection(self.turnDirection)
 
     def exit(self):
         super().exit()
 
     def run(self) -> RobotStates:
-        state = INFRARED.get_state()
+        if (time.time() - self.initialTime < self.ignoreTime):
+            return RobotStates.TURN
 
-        if (state == 2):
+        direction = INFRARED.get_direction()
+
+        if (direction == Directions.FORWARD):
             return RobotStates.FORWARD
+
+        if (direction != ENGINE.current_direction):
+            if (direction != Directions.FORWARD):
+                ENGINE.setDirection(direction)
         
         return RobotStates.TURN

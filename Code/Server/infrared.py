@@ -1,29 +1,36 @@
+from Directions import Directions
 from Duties import *
+import RPi.GPIO as GPIO
 
-from Line_Tracking import *
-
-INFRARED=Line_Tracking()
+DIRECTIONS = {
+    0: Directions.IGNORE,
+    1: Directions.RIGHT_DEVIATION,
+    2: Directions.FORWARD,
+    3: Directions.RIGHT_TURN,
+    4: Directions.LEFT_DEVIATION,
+    5: Directions.IGNORE,
+    6: Directions.LEFT_TURN,
+    7: Directions.CROSS_ROAD
+}
 
 class Infrared:
     def __init__(self):
-        self.L_SENSOR = GPIO.input(INFRARED.IR01)
-        self.M_SENSOR = GPIO.input(INFRARED.IR02)
-        self.R_SENSOR = GPIO.input(INFRARED.IR03)
-        self.DUTIES = {
-            0: Duties(800, 800, 800, 800),
-            1: Duties(2500, 2500, -1500, -1500),
-            2: Duties(800, 800, 800, 800),
-            3: Duties(4000,4000,-2000,-2000),
-            4: Duties(-1500,-1500,2500,2500),
-            5: Duties(800, 800, 800, 800),
-            6: Duties(-2000,-2000,4000,4000),
-            7: Duties(4000, 4000, -2000, -2000)
-        }
+        self.IR01 = 14
+        self.IR02 = 15
+        self.IR03 = 23
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(self.IR01,GPIO.IN)
+        GPIO.setup(self.IR02,GPIO.IN)
+        GPIO.setup(self.IR03,GPIO.IN)
+
+        self.L_SENSOR = GPIO.input(self.IR01)
+        self.M_SENSOR = GPIO.input(self.IR02)
+        self.R_SENSOR = GPIO.input(self.IR03)
     
-    def get_state(self):
-        self.L_SENSOR = GPIO.input(INFRARED.IR01)
-        self.M_SENSOR = GPIO.input(INFRARED.IR02)
-        self.R_SENSOR = GPIO.input(INFRARED.IR03)
+    def get_direction(self):
+        self.L_SENSOR = GPIO.input(self.IR01)
+        self.M_SENSOR = GPIO.input(self.IR02)
+        self.R_SENSOR = GPIO.input(self.IR03)
         state = 0
         if self.L_SENSOR == True:
             state=(state | 4)
@@ -31,31 +38,7 @@ class Infrared:
             state=(state | 2)
         if self.R_SENSOR == True:
             state=(state | 1)
-        return state
+        return DIRECTIONS[state]
     
-    def is_L_activated(self):
-        self.L_SENSOR = GPIO.input(INFRARED.IR01)
-        return self.L_SENSOR
-    
-    def is_M_activated(self):
-        self.M_SENSOR = GPIO.input(INFRARED.IR02)
-        return self.M_SENSOR
-    
-    def is_R_activated(self):
-        self.R_SENSOR = GPIO.input(INFRARED.IR03)
-        return self.R_SENSOR
-    
-    def has_left_turn(self):
-        return (self.is_L_activated() == True and 
-                self.is_M_activated() == True and 
-                self.is_R_activated() == False)
-
-    def has_right_turn(self):
-        return (self.is_R_activated() == True and 
-                self.is_M_activated() == True and 
-                self.is_L_activated() == False)
-    
-    def has_cross_road(self):
-        return (self.is_L_activated() == True and 
-                self.is_M_activated() == True and 
-                self.is_R_activated() == True)
+    def requires_turn(self, direction: Directions):
+        return direction == Directions.CROSS_ROAD or direction == Directions.LEFT_TURN or direction == Directions.RIGHT_TURN
