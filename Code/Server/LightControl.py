@@ -1,5 +1,5 @@
 from Colors import Colors, ColorsDict
-from Led import Led, Color
+from Led import Led
 
 class LightControl:
     def __init__(self):

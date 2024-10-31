@@ -10,7 +10,6 @@ class State(ABC):
     @abstractmethod
     def setup(self):
         print(self.__class__.__name__)
-        ENGINE.stop()
 
     @abstractmethod
     def exit(self):

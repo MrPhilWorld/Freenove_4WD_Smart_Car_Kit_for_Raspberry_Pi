@@ -1,11 +1,14 @@
 from Colors import Colors
+from ForwardWithoutDetectionState import ForwardWithoutDetectionState
+from PathDecisionState import PathDecisionState
 from State import State
 from BackwardState import BackwardState
-from PathDecisionState import PathDecisionState
+from CrossroadDetectionState import CrossroadDetectionState
 from ForwardState import ForwardState
 from TurnState import TurnState
 
 from RobotStates import RobotStates
+from WinState import WinState
 from maze import LIGHT_CONTROL, OBSTACLE_DETECTION, ENGINE
 
 class StateMachine():
@@ -14,7 +17,10 @@ class StateMachine():
             RobotStates.FORWARD: ForwardState(),
             RobotStates.TURN: TurnState(),
             RobotStates.BACKWARD: BackwardState(),
-            RobotStates.PATH_DECISION: PathDecisionState()
+            RobotStates.CROSSROAD_DETECTION: CrossroadDetectionState(),
+            RobotStates.PATH_DECISION: PathDecisionState(),
+            RobotStates.FORWARD_WITHOUT_DETECTION: ForwardWithoutDetectionState(),
+            RobotStates.WIN: WinState()
         }
         self.STATE = initial_state
         self.STATES[self.STATE].setup()

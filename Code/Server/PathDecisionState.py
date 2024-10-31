@@ -1,45 +1,47 @@
 import random
-import time
 from Colors import Colors
 from Directions import Directions
 from RobotStates import RobotStates
 from State import State
-from maze import INFRARED, ENGINE, LIGHT_CONTROL
+from maze import ENGINE, LIGHT_CONTROL, MEMORY
 
 class PathDecisionState(State):
     def __init__(self):
         super().__init__()
-        self.stopTime = 0.5
         
     def setup(self):
-        self.initialDirection = INFRARED.get_direction()
-        self.directionsFound = {self.initialDirection}
-        self.initialTime = time.time()
         super().setup()
-        LIGHT_CONTROL.setColor(Colors.ORANGE)
-        print("PathDecisionState setup, current direction: " + str(self.initialDirection))
+        self.crossroad = MEMORY.crossroads[-1]
+        LIGHT_CONTROL.setColor(Colors.BLUE)
 
     def exit(self):
         super().exit()
 
-    def run(self) -> RobotStates:
-        if (time.time() - self.initialTime < 0.5):
-            self.directionsFound.add(INFRARED.get_direction())
-            return RobotStates.PATH_DECISION
+    def run(self) -> RobotStates: 
+        if MEMORY.isBacktracking is True:
+            MEMORY.isBacktracking = False
 
-        if Directions.CROSS_ROAD in self.directionsFound:
-            ENGINE.desired_turn_direction = self.choose_random_path()
-        else:
-            ENGINE.desired_turn_direction = self.initialDirection
-            
-        print(ENGINE.desired_turn_direction)
-
-        return RobotStates.TURN
-    
-    def choose_random_path(self):
-            print("Choosing random turn")
-            randomDirection = random.randint(1, 2)
-            if randomDirection == 1:
-                return Directions.LEFT_TURN
+        if len(self.crossroad.directions) <= 0:
+            MEMORY.isBacktracking = True
+            MEMORY.next_direction = self.crossroad.get_direction_with_offset(Directions.NONE)
+            MEMORY.crossroads.pop()
+            # Choose path to return to previous crossroad instead
+            ENGINE.timeout(0.2)
+            if MEMORY.next_direction == Directions.FORWARD:
+                return RobotStates.FORWARD_WITHOUT_DETECTION
             else:
-                return Directions.RIGHT_TURN
+                return RobotStates.TURN
+
+        direction = self.choose_random_direction(self.crossroad.directions)
+        MEMORY.next_direction = self.crossroad.get_direction_with_offset(direction)
+        self.crossroad.currentDirectionOffset = direction
+        ENGINE.timeout(0.2)
+        if MEMORY.next_direction == Directions.FORWARD:
+            return RobotStates.FORWARD_WITHOUT_DETECTION
+        else:
+            return RobotStates.TURN
+    
+    def choose_random_direction(self, directions: set[Directions]):
+        direction = random.choice(tuple(directions))
+        directions.remove(direction)
+        return direction

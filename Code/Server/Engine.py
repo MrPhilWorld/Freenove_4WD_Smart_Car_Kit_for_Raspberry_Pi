@@ -1,3 +1,4 @@
+import time
 from Directions import Directions
 from Duties import Duties
 from Motor import Motor
@@ -6,21 +7,23 @@ DUTIES = {
     Directions.NONE: Duties(0, 0, 0, 0),
     Directions.FORWARD: Duties(800, 800, 800, 800),
     Directions.BACKWARD: Duties(-800, -800, -800, -800),
-    Directions.RIGHT_DEVIATION: Duties(2500, 2500, -1500, -1500),
-    Directions.RIGHT_TURN: Duties(4000,4000,-2000,-2000),
-    Directions.LEFT_DEVIATION: Duties(-1500,-1500,2500,2500),
-    Directions.LEFT_TURN: Duties(-2000,-2000,4000,4000),
-    Directions.CROSS_ROAD: Duties(0,0,0,0),
+    Directions.RIGHT_DEVIATION: Duties(2500, 2500, -2500, -2500),
+    Directions.RIGHT_TURN: Duties(4000, 4000, -2000, -2000),
+    Directions.LEFT_DEVIATION: Duties(-2500, -2500, 2500, 2500),
+    Directions.LEFT_TURN: Duties(-2000, -2000, 4000, 4000),
+    Directions.ROTATE: Duties(-4000, -4000, 4000, 4000),
 }
 
 class Engine:
     def __init__(self):
         self.PWM=Motor()
         self.current_direction = Directions.NONE
-        self.desired_turn_direction = Directions.NONE
 
     def setDirection(self, direction: Directions, reverse = False):
-        if (direction == Directions.IGNORE):
+        if direction == Directions.IGNORE:
+            return
+        
+        if direction == self.current_direction:
             return
 
         self.current_direction = direction
@@ -44,3 +47,7 @@ class Engine:
 
     def stop(self):
         self.setDirection(Directions.NONE)
+
+    def timeout(self, seconds: int, direction: Directions = Directions.NONE):
+        self.setDirection(direction)
+        time.sleep(seconds)

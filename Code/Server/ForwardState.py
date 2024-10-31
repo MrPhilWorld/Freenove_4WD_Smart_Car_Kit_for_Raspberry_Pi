@@ -1,21 +1,21 @@
+import time
 from Colors import Colors
 from RobotStates import RobotStates
 from State import State
 from Directions import Directions
-from maze import INFRARED, LIGHT_CONTROL, OBSTACLE_DETECTION, ENGINE
+from maze import INFRARED, LIGHT_CONTROL, MEMORY, OBSTACLE_DETECTION, ENGINE
 
 
 class ForwardState(State):
     def __init__(self):
         super().__init__()
-        self.DIRECTION = Directions.NONE
 
     def setup(self):
         super().setup()
         LIGHT_CONTROL.setColor(Colors.GREEN)
-        self.DIRECTION = Directions.NONE
+        self.lastDirectionDetectedTime = time.time()
         OBSTACLE_DETECTION.start()
-        pass
+        ENGINE.setDirection(Directions.FORWARD)
 
     def exit(self):
         super().exit()
@@ -24,7 +24,18 @@ class ForwardState(State):
     def run(self) -> RobotStates:
         direction = INFRARED.get_direction()
         if (INFRARED.requires_turn(direction)):
-            return RobotStates.PATH_DECISION
+            print("requires turn")
+            if not MEMORY.isBacktracking:
+                MEMORY.next_direction = direction
+                return RobotStates.CROSSROAD_DETECTION
+            else:
+                return RobotStates.PATH_DECISION
+
+        if direction != Directions.IGNORE:
+            self.lastDirectionDetectedTime = time.time()
+
+        if time.time() - self.lastDirectionDetectedTime > 1:
+            return RobotStates.WIN
         
         self.move()
 
@@ -35,7 +46,4 @@ class ForwardState(State):
 
     def move(self):
         direction = INFRARED.get_direction()
-
-        if (direction != self.DIRECTION):
-            self.DIRECTION = direction
-            ENGINE.setDirection(direction)
+        ENGINE.setDirection(direction)

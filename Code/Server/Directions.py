@@ -11,3 +11,4 @@ class Directions(Enum):
     LEFT_DEVIATION = 7
     RIGHT_DEVIATION = 8
     CUSTOM = 9
+    ROTATE = 10

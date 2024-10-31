@@ -3,7 +3,7 @@ from Colors import Colors
 from Directions import Directions
 from RobotStates import RobotStates
 from State import State
-from maze import INFRARED, ENGINE, LIGHT_CONTROL
+from maze import INFRARED, ENGINE, LIGHT_CONTROL, MEMORY
 
 class TurnState(State):
     def __init__(self):
@@ -13,24 +13,20 @@ class TurnState(State):
     def setup(self):
         super().setup()
         LIGHT_CONTROL.setColor(Colors.YELLOW)
+        ENGINE.timeout(0.3, Directions.FORWARD)
         self.initialTime = time.time()
-        self.turnDirection = ENGINE.desired_turn_direction
-        ENGINE.setDirection(self.turnDirection)
+        ENGINE.setDirection(MEMORY.next_direction)
 
     def exit(self):
         super().exit()
 
     def run(self) -> RobotStates:
-        if (time.time() - self.initialTime < self.ignoreTime):
-            return RobotStates.TURN
+        while time.time() - self.initialTime < self.ignoreTime:
+            pass
 
         direction = INFRARED.get_direction()
 
         if (direction == Directions.FORWARD):
-            return RobotStates.FORWARD
-
-        if (direction != ENGINE.current_direction):
-            if (direction != Directions.FORWARD):
-                ENGINE.setDirection(direction)
-        
+            return RobotStates.FORWARD_WITHOUT_DETECTION
+  
         return RobotStates.TURN

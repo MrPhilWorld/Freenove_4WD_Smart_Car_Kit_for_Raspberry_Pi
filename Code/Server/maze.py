@@ -1,12 +1,14 @@
 from Engine import Engine
 from LightControl import LightControl
+from Memory import Memory
 from ObstacleDetection import ObstacleDetection
 from RobotStates import RobotStates
 from StateMachine import *
 
 from Ultrasonic import Ultrasonic
-from infrared import Infrared
+from Infrared import Infrared
 
+MEMORY=Memory()
 ENGINE=Engine()
 ULTRASONIC=Ultrasonic()
 LIGHT_CONTROL=LightControl()

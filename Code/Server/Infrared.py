@@ -10,7 +10,7 @@ DIRECTIONS = {
     4: Directions.LEFT_DEVIATION,
     5: Directions.IGNORE,
     6: Directions.LEFT_TURN,
-    7: Directions.CROSS_ROAD
+    7: Directions.IGNORE
 }
 
 class Infrared:

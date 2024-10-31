@@ -13,6 +13,7 @@ class ObstacleDetection():
 
     def start(self):
         self.ACTIVE = True
+        self.DISTANCE = 0
         SERVO.setServoPwm(1, 70)
         servo_thread = threading.Thread(target=self.move_Servo)
         servo_thread.daemon = True
@@ -29,11 +30,15 @@ class ObstacleDetection():
         try:
             while self.ACTIVE:
                 for i in range(50,130,1):
+                    if not self.ACTIVE:
+                        break
                     SERVO.setServoPwm('0',i)
-                    time.sleep(0.01)
+                    time.sleep(0.001)
                 for i in range(130,50,-1):
+                    if not self.ACTIVE:
+                        break
                     SERVO.setServoPwm('0',i)
-                    time.sleep(0.01) 
+                    time.sleep(0.001) 
         except KeyboardInterrupt:
             self.reset()
             print ("\nEnd of program")

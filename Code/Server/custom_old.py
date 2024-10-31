@@ -4,7 +4,7 @@ from Motor import *
 from Ultrasonic import *
 from servo import *
 from Led import *
-from infrared import Infrared
+from Infrared import Infrared
 from Action import *
 
 PWM=Motor()
