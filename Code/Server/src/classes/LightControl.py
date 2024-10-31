@@ -1,4 +1,4 @@
-from Colors import Colors, ColorsDict
+from src.enums.Colors import Colors, ColorsDict
 from Led import Led
 
 class LightControl:

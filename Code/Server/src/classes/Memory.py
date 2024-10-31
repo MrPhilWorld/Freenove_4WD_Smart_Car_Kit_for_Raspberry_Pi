@@ -1,5 +1,5 @@
-from Crossroad import Crossroad
-from Directions import Directions
+from src.classes.Crossroad import Crossroad
+from src.enums.Directions import Directions
 
 class Memory:
     def __init__(self):

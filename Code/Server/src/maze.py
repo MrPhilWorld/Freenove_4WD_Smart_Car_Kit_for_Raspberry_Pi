@@ -1,9 +1,9 @@
 from src.classes.Engine import Engine
 from src.classes.LightControl import LightControl
 from src.classes.Infrared import Infrared
-from Memory import Memory
-from ObstacleDetection import ObstacleDetection
-from RobotStates import RobotStates
+from src.classes.Memory import Memory
+from src.classes.ObstacleDetection import ObstacleDetection
+from src.enums.RobotStates import RobotStates
 from src.state_machine.StateMachine import *
 
 from Ultrasonic import Ultrasonic

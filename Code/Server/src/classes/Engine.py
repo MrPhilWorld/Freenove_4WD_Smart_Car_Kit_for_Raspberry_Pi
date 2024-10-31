@@ -1,6 +1,6 @@
 import time
-from Directions import Directions
-from src.dataclasses.Duties import Duties
+from src.enums.Directions import Directions
+from src.classes.Duties import Duties
 from Motor import Motor
 
 DUTIES = {

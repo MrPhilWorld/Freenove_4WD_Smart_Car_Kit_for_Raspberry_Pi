@@ -1,10 +1,10 @@
 import time
-from Colors import Colors
-from Crossroad import Crossroad
-from Directions import Directions
-from RobotStates import RobotStates
+from src.enums.Colors import Colors
+from src.classes.Crossroad import Crossroad
+from src.enums.Directions import Directions
+from src.enums.RobotStates import RobotStates
 from State import State
-from maze import INFRARED, ENGINE, LIGHT_CONTROL, MEMORY
+from src.maze import INFRARED, ENGINE, LIGHT_CONTROL, MEMORY
 
 class CrossroadDetectionState(State):
     def __init__(self):

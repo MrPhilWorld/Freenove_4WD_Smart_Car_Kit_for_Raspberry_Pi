@@ -1,9 +1,9 @@
 import time
-from Colors import Colors
-from RobotStates import RobotStates
+from src.enums.Colors import Colors
+from src.enums.RobotStates import RobotStates
 from State import State
-from Directions import Directions
-from maze import INFRARED, LIGHT_CONTROL, MEMORY, OBSTACLE_DETECTION, ENGINE
+from src.enums.Directions import Directions
+from src.maze import INFRARED, LIGHT_CONTROL, MEMORY, OBSTACLE_DETECTION, ENGINE
 
 
 class ForwardState(State):

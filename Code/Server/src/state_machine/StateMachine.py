@@ -1,4 +1,4 @@
-from Colors import Colors
+from src.enums.Colors import Colors
 from states.ForwardWithoutDetectionState import ForwardWithoutDetectionState
 from states.PathDecisionState import PathDecisionState
 from states.State import State
@@ -8,8 +8,8 @@ from states.ForwardState import ForwardState
 from states.TurnState import TurnState
 from states.WinState import WinState
 
-from RobotStates import RobotStates
-from maze import LIGHT_CONTROL, OBSTACLE_DETECTION, ENGINE
+from src.enums.RobotStates import RobotStates
+from src.maze import LIGHT_CONTROL, OBSTACLE_DETECTION, ENGINE
 
 class StateMachine():
     def __init__(self, initial_state: RobotStates = RobotStates.FORWARD):

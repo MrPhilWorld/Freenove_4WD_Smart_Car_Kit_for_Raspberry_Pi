@@ -1,9 +1,9 @@
 import time
-from Colors import Colors
-from Directions import Directions
-from RobotStates import RobotStates
+from src.enums.Colors import Colors
+from src.enums.Directions import Directions
+from src.enums.RobotStates import RobotStates
 from State import State
-from maze import INFRARED, ENGINE, LIGHT_CONTROL, MEMORY
+from src.maze import INFRARED, ENGINE, LIGHT_CONTROL, MEMORY
 
 class TurnState(State):
     def __init__(self):

@@ -1,9 +1,9 @@
 import random
-from Colors import Colors
-from Directions import Directions
-from RobotStates import RobotStates
+from src.enums.Colors import Colors
+from src.enums.Directions import Directions
+from src.enums.RobotStates import RobotStates
 from src.state_machine.states.State import State
-from maze import ENGINE, LIGHT_CONTROL, MEMORY
+from src.maze import ENGINE, LIGHT_CONTROL, MEMORY
 
 class PathDecisionState(State):
     def __init__(self):

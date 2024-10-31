@@ -1,5 +1,5 @@
-from Directions import Directions
-from src.dataclasses.Duties import *
+from src.enums.Directions import Directions
+from src.classes.Duties import *
 import RPi.GPIO as GPIO
 
 DIRECTIONS = {

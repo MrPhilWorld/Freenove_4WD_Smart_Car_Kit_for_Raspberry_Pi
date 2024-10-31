@@ -1,7 +1,7 @@
-from Colors import Colors
-from RobotStates import RobotStates
+from src.enums.Colors import Colors
+from src.enums.RobotStates import RobotStates
 from State import State
-from maze import LIGHT_CONTROL, ENGINE
+from src.maze import LIGHT_CONTROL, ENGINE
 
 
 class WinState(State):

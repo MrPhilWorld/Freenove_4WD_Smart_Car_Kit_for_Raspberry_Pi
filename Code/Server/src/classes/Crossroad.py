@@ -1,4 +1,4 @@
-from Directions import Directions
+from src.enums.Directions import Directions
 
 class Crossroad:
     def __init__(self):

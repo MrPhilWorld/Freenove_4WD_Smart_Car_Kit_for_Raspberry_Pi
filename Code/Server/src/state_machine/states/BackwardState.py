@@ -1,8 +1,8 @@
-from Colors import Colors
-from Directions import Directions
-from RobotStates import RobotStates
+from src.enums.Colors import Colors
+from src.enums.Directions import Directions
+from src.enums.RobotStates import RobotStates
 from State import State
-from maze import LIGHT_CONTROL, ENGINE, INFRARED, MEMORY
+from src.maze import LIGHT_CONTROL, ENGINE, INFRARED, MEMORY
 
 class BackwardState(State):
     def __init__(self):
