@@ -2,7 +2,7 @@ import random
 from Colors import Colors
 from Directions import Directions
 from RobotStates import RobotStates
-from State import State
+from src.state_machine.states.State import State
 from maze import ENGINE, LIGHT_CONTROL, MEMORY
 
 class PathDecisionState(State):

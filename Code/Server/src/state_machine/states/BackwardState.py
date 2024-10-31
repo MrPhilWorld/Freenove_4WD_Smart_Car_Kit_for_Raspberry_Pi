@@ -1,4 +1,3 @@
-import time
 from Colors import Colors
 from Directions import Directions
 from RobotStates import RobotStates

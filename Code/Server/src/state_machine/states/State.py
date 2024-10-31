@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 
 from RobotStates import RobotStates
-from maze import ENGINE
 
 class State(ABC):
     def __init__(self):

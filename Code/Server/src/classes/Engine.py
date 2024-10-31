@@ -1,6 +1,6 @@
 import time
 from Directions import Directions
-from Duties import Duties
+from src.dataclasses.Duties import Duties
 from Motor import Motor
 
 DUTIES = {

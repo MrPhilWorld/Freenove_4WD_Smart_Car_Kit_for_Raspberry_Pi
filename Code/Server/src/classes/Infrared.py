@@ -1,5 +1,5 @@
 from Directions import Directions
-from Duties import *
+from src.dataclasses.Duties import *
 import RPi.GPIO as GPIO
 
 DIRECTIONS = {

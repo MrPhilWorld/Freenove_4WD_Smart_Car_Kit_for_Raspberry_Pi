@@ -1,14 +1,14 @@
 from Colors import Colors
-from ForwardWithoutDetectionState import ForwardWithoutDetectionState
-from PathDecisionState import PathDecisionState
-from State import State
-from BackwardState import BackwardState
-from CrossroadDetectionState import CrossroadDetectionState
-from ForwardState import ForwardState
-from TurnState import TurnState
+from states.ForwardWithoutDetectionState import ForwardWithoutDetectionState
+from states.PathDecisionState import PathDecisionState
+from states.State import State
+from states.BackwardState import BackwardState
+from states.CrossroadDetectionState import CrossroadDetectionState
+from states.ForwardState import ForwardState
+from states.TurnState import TurnState
+from states.WinState import WinState
 
 from RobotStates import RobotStates
-from WinState import WinState
 from maze import LIGHT_CONTROL, OBSTACLE_DETECTION, ENGINE
 
 class StateMachine():
