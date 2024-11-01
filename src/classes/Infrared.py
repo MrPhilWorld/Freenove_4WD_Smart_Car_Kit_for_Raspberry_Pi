@@ -1,5 +1,4 @@
 from src.enums.Directions import Directions
-from src.classes.Duties import *
 import RPi.GPIO as GPIO
 
 DIRECTIONS = {
@@ -32,11 +31,11 @@ class Infrared:
         self.M_SENSOR = GPIO.input(self.IR02)
         self.R_SENSOR = GPIO.input(self.IR03)
         state = 0
-        if self.L_SENSOR == True:
+        if self.L_SENSOR:
             state=(state | 4)
-        if self.M_SENSOR == True:
+        if self.M_SENSOR:
             state=(state | 2)
-        if self.R_SENSOR == True:
+        if self.R_SENSOR:
             state=(state | 1)
         return DIRECTIONS[state]
     

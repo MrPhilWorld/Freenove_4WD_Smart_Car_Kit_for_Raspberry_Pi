@@ -1,6 +1,5 @@
 import os
-import sys
-import time
+
 flag=0x00
 for x in range(1,4):
 	if os.system("python -m pip install --upgrade pip --user") == 0:

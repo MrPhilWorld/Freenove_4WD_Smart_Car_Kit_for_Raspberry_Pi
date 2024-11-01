@@ -1,5 +1,5 @@
 from freenove.PCA9685 import PCA9685
-from freenove.ADC import *
+from freenove.ADC import Adc
 
 class Motor:
     def __init__(self):
